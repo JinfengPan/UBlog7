@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Microsoft.AspNet.Identity;
+using System.Linq;
 using System.Web.Mvc;
 using UBlog.MVC.Models;
 using UBlog.MVC.ViewModels;
@@ -15,6 +16,8 @@ namespace UBlog.MVC.Controllers
             _context = new ApplicationDbContext();
         }
 
+        //@Hi111111
+        [Authorize]
         public ActionResult Create()
         {
             var viewModel = new GigFormViewModel
@@ -22,6 +25,25 @@ namespace UBlog.MVC.Controllers
                 Genres = _context.Genres.ToList()
             };
             return View(viewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Create(GigFormViewModel viewModel)
+        {
+            var artistId = User.Identity.GetUserId();
+
+            var gig = new Gig()
+            {
+                ArtistId = User.Identity.GetUserId(),
+                DateTime = viewModel.DateTime,
+                GenreId = viewModel.Genre,
+                Venue = viewModel.Venue
+            };
+
+            _context.Gigs.Add(gig);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
