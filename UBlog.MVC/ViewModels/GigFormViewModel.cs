@@ -10,14 +10,21 @@ namespace UBlog.MVC.ViewModels
         [Required]
         public string Venue { get; set; }
         [Required]
+        [FutureDate]
         public string Date { get; set; }
         [Required]
+        [ValidTime]
         public string Time { get; set; }
         [Required]
         public byte Genre { get; set; }
 
         public IEnumerable<Genre> Genres { get; set; }
 
-        public DateTime DateTime => DateTime.Parse($"{Date} {Time}");
+        public DateTime GetDateTime()
+        {
+            return DateTime.Parse($"{Date} {Time}");
+        }
+
+
     }
 }
