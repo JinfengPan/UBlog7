@@ -28,6 +28,7 @@ namespace UBlog.MVC.Controllers
         }
 
         [Authorize]
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Create(GigFormViewModel viewModel)
         {
